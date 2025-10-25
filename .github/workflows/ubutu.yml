@@ -1,0 +1,36 @@
+name: Run Ubuntu Commands
+
+# Kích hoạt workflow khi có push hoặc khi chạy thủ công
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  run-ubuntu:
+    runs-on: ubuntu-latest   # GitHub sẽ tự cấp máy Ubuntu mới
+
+    steps:
+      # Bước 1: Lấy mã nguồn của repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Bước 2: Cập nhật hệ thống
+      - name: Update system
+        run: |
+          sudo apt update
+          sudo apt upgrade -y
+
+      # Bước 3: Cài gói cần thiết (ví dụ Python)
+      - name: Install dependencies
+        run: |
+          sudo apt install -y python3 python3-pip
+
+      # Bước 4: Kiểm tra cài đặt
+      - name: Check Python version
+        run: python3 --version
+
+      # Bước 5: Chạy script của bạn (nếu có)
+      - name: Run custom script
+        run: |
+          echo "Hello from Ubuntu on GitHub Actions!"
+          python3 your_script.py || echo "No script found, skipping"
